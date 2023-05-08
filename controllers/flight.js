@@ -1,48 +1,56 @@
 const { response, request } = require( 'express' );
-const { Sequelize, Op, QueryTypes } = require('sequelize');
+const { QueryTypes } = require('sequelize');
 
-const Passenger = require('../models/passenger');
-const Airplane = require('../models/airplane');
-const BoardingPass = require('../models/boardingPass');
 const Flight = require('../models/flight');
-const Purchase = require('../models/purchase');
-const Seat = require('../models/seat');
-const SeatType = require('../models/seatType');
 const db = require('../database/connection');
-// OBTENER CATEGORIAS
+
+
 const getFlightByIdWithPassenger= async (req = request, res= response) => {
 
     try {
         
         const { id } = req.params;
+
+        if ( !Number(id) ){
+          return res.status(404).json({
+            code: 404,
+            data: {},
+          });
+        }
     
         let flight = await Flight.findByPk(id);
+
+        if( !flight ){
+          return res.status(404).json({
+            code: 404,
+            data: {},
+          });
+        }
           
         const passengers = await db.query(`
-        SELECT passenger.*, boarding_pass.boarding_pass_id , boarding_pass.purchase_id ,boarding_pass.seat_id ,boarding_pass.seat_type_id , boarding_pass.flight_id 
+        SELECT passenger.*, boarding_pass.* 
         FROM boarding_pass
         INNER JOIN passenger  ON passenger.passenger_id = boarding_pass.passenger_id
         WHERE boarding_pass.flight_id = `+ id + `
         ORDER BY boarding_pass.passenger_id DESC
-        LIMIT 2
-        `);
+        `, { type: QueryTypes.SELECT });
         
         
         const data = {
             ...flight.toJSON(),
-            passengers: passengers[0]
+            passengers: passengers
         }
-        const pas2 = JSON.stringify(data)
-        const data2 = convertKeysToCamelCase(JSON.parse(pas2));
+        const parseData = JSON.stringify(data)
+        const newData = convertKeysToCamelCase(JSON.parse(parseData));
           
-        return res.json({
+        return res.status(200).json({
             code: 200,
-            data: data2,
+            data: newData,
           });
     } catch (error) {
-        return res.json({
-            code: 404,
-            data: {},
+        return res.status(400).json({
+            code: 400,
+            errors: "could not connect to db",
           });
     }
 
