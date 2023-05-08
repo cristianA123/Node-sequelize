@@ -11,30 +11,13 @@ class Server{
 
         this.paths = {
 
-            auth:"/api/auth",
-            usuario:"/api/usuarios" ,
-            categorias : "/api/categorias", 
-            productos : "/api/productos", 
-            buscar : "/api/buscar", 
-            uploads : "/api/uploads", 
-            roles : "/api/roles", 
-            solicitudes : "/api/solicitudes", 
-
             flight: '/flights'
 
         }
-        // this.usuariosPath ="/api/usuarios" 
-        // this.authPath ="/api/auth" 
-        // this.authCategoria ="/api/categorias" 
-
-        //Conectyar a la base de datos:
         this.conectarBD();
         
-        // Middlewares
         this.middlewares();
 
-
-        // Rutas de mi aplicacion
         this.route();
     }
 
@@ -44,7 +27,6 @@ class Server{
             console.log('DB online');
             
         } catch (error) {
-            // throw new Error('No se pudo conectar a la bd == ', error.message)
             console.log(error.message);
             return {
                 code: 400,
@@ -56,16 +38,12 @@ class Server{
 
     middlewares(){
 
-        //cors
         this.app.use( cors() )
 
-        //Lectura y parseo del body
         this.app.use(  express.json() );
 
-        // Directorio publico
         this.app.use( express.static('public') );
 
-        //Carga de archivos
         this.app.use(fileUpload({
             useTempFiles : true,
             tempFileDir : '/tmp/',
@@ -75,15 +53,6 @@ class Server{
     }
 
     route(){
-
-        this.app.use( this.paths.auth, require('../routes/auth.js') );
-        this.app.use( this.paths.categorias, require('../routes/categorias.js') );
-        this.app.use( this.paths.productos, require('../routes/productos.js') );
-        this.app.use( this.paths.buscar, require('../routes/buscar.js') );
-        this.app.use( this.paths.usuario, require('../routes/usuarios.js') );
-        this.app.use( this.paths.uploads, require('../routes/uploads.js') );
-        this.app.use( this.paths.roles, require('../routes/roles.js') );
-        this.app.use( this.paths.solicitudes, require('../routes/solicitudes.js') );
 
         this.app.use( this.paths.flight, require('../routes/flight.js') );
 

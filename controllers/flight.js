@@ -11,7 +11,7 @@ const getFlightByIdWithPassenger= async (req = request, res= response) => {
         
         const { id } = req.params;
 
-        if ( !Number(id) ){
+        if ( Number.isInteger(id) ){
           return res.status(404).json({
             code: 404,
             data: {},
@@ -47,6 +47,7 @@ const getFlightByIdWithPassenger= async (req = request, res= response) => {
             code: 200,
             data: newData,
           });
+
     } catch (error) {
         return res.status(400).json({
             code: 400,
@@ -58,6 +59,7 @@ const getFlightByIdWithPassenger= async (req = request, res= response) => {
 };
 
 convertKeysToCamelCase = (obj) => {
+
     if (Array.isArray(obj)) {
       return obj.map(v => convertKeysToCamelCase(v));
     } else if (obj !== null && typeof obj === 'object') {
@@ -67,6 +69,7 @@ convertKeysToCamelCase = (obj) => {
         return result;
       }, {});
     }
+
     return obj;
   }
 
