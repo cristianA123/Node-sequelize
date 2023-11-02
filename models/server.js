@@ -18,8 +18,6 @@ class Server{
             buscar : "/api/buscar", 
             uploads : "/api/uploads", 
             roles : "/api/roles", 
-            solicitudes : "/api/solicitudes", 
-
         }
 
         //Conectar a la base de datos:

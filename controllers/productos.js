@@ -1,39 +1,11 @@
 const { response, request } = require( 'express' );
 const bcryptjs = require('bcryptjs');
 const { Categoria, Producto } =  require('../models');
-const Passenger = require('../models/passenger');
-const Airplane = require('../models/airplane');
-const BoardingPass = require('../models/boardingPass');
-const Flight = require('../models/flight');
-const Purchase = require('../models/purchase');
-const Seat = require('../models/seat');
-const SeatType = require('../models/seatType');
 const db = require('../database/connection');
-const { QueryTypes } = require('sequelize');
-const { Sequelize } = require('sequelize');
 
 
 // OBTENER CATEGORIAS
 const obtnerProductos = async (req = request, res= response) => {
-
-    // const pas = await Passenger.findAll({
-    //     attributes: ['name','passenger_id','dni','age','country']
-    //   });
-
-    // const pas = await Airplane.findAll();
-    // const pas = await BoardingPass.findAll();
-    // const pas = await Flight.findAll();
-    // const pas = await Passenger.findAll();
-    // const pas = await Purchase.findAll();
-    // const pas = await Seat.findAll();
-    // const pas = await SeatType.findAll()
-        const pas = await Seat.findAll({
-        //attributes: ['seat_type_id']
-        include: [
-            { model: SeatType }
-          ],
-        
-    });
 
     res.json({
       a: 'asa',
@@ -43,16 +15,9 @@ const obtnerProductos = async (req = request, res= response) => {
 
 const obtnerProducto = async (req = request, res= response) => {
 
-    // const pas = await Airplane.findAll();
-    // const pas = await BoardingPass.findAll();
-    // const pas = await Flight.findAll();
-    // const pas = await Passenger.findAll();
-    // const pas = await Purchase.findAll();
-    const pas = await Seat.findAll();
-    // const pas = await SeatType.findAll()
 
     res.json({
-        pas
+        pas: 'a'
     });
 
 
@@ -61,65 +26,14 @@ const obtnerProducto = async (req = request, res= response) => {
 
 const obtenerProductoporId = async (req = request, res= response) => {
 
-    // const pas = await Airplane.findAll();
-    // const pas = await BoardingPass.findAll();
-    // const pas = await Flight.findAll();
-    // const pas = await Passenger.findAll();
-    // const pas = await Purchase.findAll();
+   
     const { id } = req.params;
 
-    // const pas = await Flight.findAll({
-    //     where: { 
-    //         flight_id: id 
-    //     },
-    //     include: [
-    //         { 
-    //             model: BoardingPass,
-    //             attributes: [
-    //                 'boarding_pass_id',
-    //                 'purchase_id',
-    //                 'passenger_id',
-    //                 'seat_id',
-    //                 'seat_type_id',
-    //                 'flight_id'
-    //             ],
-    //             include: [
-    //                 {model: Passenger,
-    //                  attributes: [
-    //                      'passenger_id',
-    //                      'dni',
-    //                      'name',
-    //                      'age',
-    //                      'country'
-    //                  ]}
-    //             ]
-    //         }
-    //     ],
-    // });
-    // const pas = await SeatType.findAll()
     let arreglo1 = await Flight.findByPk(id);
-      
-    const suma = await db.query(`
-    SELECT 1+1
-    `);
-
-    // const users = await sequelize.query("SELECT * FROM passenger", { type: QueryTypes.SELECT });
-
-    console.log(suma)
-
-    //   json = JSON(arreglo1)
-
-    //   arreglo1.push(arreglo2)  
-    // data = {
-    //     ...arreglo1.toJSON(),
-    //     passengers: arreglo2
-    // }
+    
       
       res.json({
-        // arreglo2,
-        users,
         code: 200,
-        suma
       });
 
 
