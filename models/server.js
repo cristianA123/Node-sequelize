@@ -20,14 +20,9 @@ class Server{
             roles : "/api/roles", 
             solicitudes : "/api/solicitudes", 
 
-            flight: '/flights'
-
         }
-        // this.usuariosPath ="/api/usuarios" 
-        // this.authPath ="/api/auth" 
-        // this.authCategoria ="/api/categorias" 
 
-        //Conectyar a la base de datos:
+        //Conectar a la base de datos:
         this.conectarBD();
         
         // Middlewares
@@ -83,9 +78,6 @@ class Server{
         this.app.use( this.paths.usuario, require('../routes/usuarios.js') );
         this.app.use( this.paths.uploads, require('../routes/uploads.js') );
         this.app.use( this.paths.roles, require('../routes/roles.js') );
-        this.app.use( this.paths.solicitudes, require('../routes/solicitudes.js') );
-
-        this.app.use( this.paths.flight, require('../routes/flight.js') );
 
     }
 
